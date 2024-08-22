@@ -8,7 +8,7 @@ LDFLAGS = -m elf_i386 -Ttext 0x1000 --oformat binary
 
 BOOTLOADER_SRC = boot/boot.asm
 BOOTLOADER_BIN = bootloader.bin
-KERNEL_SRC = kernel/kernel.c
+KERNEL_SRC = kernel/kernel_main.c
 KERNEL_OBJ = kernel.o
 KERNEL_BIN = kernel.bin
 IMAGE_BIN = bootable_image.bin
