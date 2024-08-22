@@ -6,19 +6,26 @@ ASFLAGS = -f bin
 CFLAGS = -m32 -ffreestanding -nostdlib -c
 LDFLAGS = -m elf_i386 -Ttext 0x1000 --oformat binary
 
-all: bootloader.bin kernel.bin bootable_image.bin
+BOOTLOADER_SRC = boot/boot.asm
+BOOTLOADER_BIN = bootloader.bin
+KERNEL_SRC = kernel.c
+KERNEL_OBJ = kernel.o
+KERNEL_BIN = kernel.bin
+IMAGE_BIN = bootable_image.bin
 
-bootloader.bin: bootloader.asm
-	$(AS) $(ASFLAGS) -o bootloader.bin bootloader.asm
+all: $(BOOTLOADER_BIN) $(KERNEL_BIN) $(IMAGE_BIN)
 
-kernel.o: kernel.c
-	$(CC) $(CFLAGS) -o kernel.o kernel.c
+$(BOOTLOADER_BIN): $(BOOTLOADER_SRC)
+	$(AS) $(ASFLAGS) -o $@ $<
 
-kernel.bin: kernel.o
-	$(LD) $(LDFLAGS) kernel.o -o kernel.bin
+$(KERNEL_OBJ): $(KERNEL_SRC)
+	$(CC) $(CFLAGS) -o $@ $<
 
-bootable_image.bin: bootloader.bin kernel.bin
-	cat bootloader.bin kernel.bin > bootable_image.bin
+$(KERNEL_BIN): $(KERNEL_OBJ)
+	$(LD) $(LDFLAGS) $< -o $@
+
+$(IMAGE_BIN): $(BOOTLOADER_BIN) $(KERNEL_BIN)
+	cat $(BOOTLOADER_BIN) $(KERNEL_BIN) > $(IMAGE_BIN)
 
 clean:
-	rm -f *.bin *.o
+	rm -f $(BOOTLOADER_BIN) $(KERNEL_BIN) $(KERNEL_OBJ) $(IMAGE_BIN)
