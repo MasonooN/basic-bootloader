@@ -3,9 +3,10 @@ CC = gcc
 LD = ld
 
 ASFLAGS = -f bin
-CFLAGS = -m32 -ffreestanding -nostdlib -c
+CFLAGS = -m32 -ffreestanding -nostdlib -nostartfiles -c
 LDFLAGS = -m elf_i386 -Ttext 0x1000 --oformat binary
 
+# Define the paths
 BOOTLOADER_SRC = boot/boot.asm
 BOOTLOADER_BIN = bootloader.bin
 KERNEL_SRC = kernel/kernel_main.c
