@@ -23,7 +23,7 @@ jobs:
     - name: Archive the build outputs
       uses: actions/upload-artifact@v4
       with:
-        name: bootable_image
-        path: bootable_image.bin
+        name: ispaa_os
+        path: ispaa_os.bin
     - name: Clean up
       run: make clean
