@@ -56,6 +56,7 @@ void display_ascii_art(void);
 void *malloc(size_t size);
 void show_memory_info(void);
 void show_help(void);
+void display_boot_sequence(void);
 
 // Utility functions
 int strcmp(const char *str1, const char *str2)
@@ -386,6 +387,73 @@ void process_command(const char *cmd)
     }
 }
 
+void display_boot_sequence(void)
+{
+    // Clear screen with blue background
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_WHITE);
+    clear_screen();
+
+    // Show "ISPAA OS" in large ASCII art
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_YELLOW);
+    set_cursor_position(10, 2);
+    print_string("██╗███████╗██████╗  █████╗  █████╗      ██████╗ ███████╗");
+    set_cursor_position(10, 3);
+    print_string("██║██╔════╝██╔══██╗██╔══██╗██╔══██╗    ██╔═══██╗██╔════╝");
+    set_cursor_position(10, 4);
+    print_string("██║███████╗██████╔╝███████║███████║    ██║   ██║███████╗");
+    set_cursor_position(10, 5);
+    print_string("██║╚════██║██╔═══╝ ██╔══██║██╔══██║    ██║   ██║╚════██║");
+    set_cursor_position(10, 6);
+    print_string("██║███████║██║     ██║  ██║██║  ██║    ╚██████╔╝███████║");
+    set_cursor_position(10, 7);
+    print_string("╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚══════╝");
+
+    // Version and tagline
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_WHITE);
+    set_cursor_position(25, 9);
+    print_string("*** Version 2.0 - The Future is Here ***");
+
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_LIGHT_GREEN);
+    set_cursor_position(20, 11);
+    print_string("Advanced 32-bit Operating System Framework");
+
+    // Loading animation
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_LIGHT_CYAN);
+    set_cursor_position(25, 14);
+    print_string("Initializing system components...");
+
+    // Progress bar
+    set_cursor_position(25, 16);
+    print_string("Progress: [");
+
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_LIGHT_GREEN);
+    for (int i = 0; i < 30; i++)
+    {
+        put_char('█');
+        // Simple delay
+        for (volatile int j = 0; j < 2000000; j++)
+            ;
+    }
+
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_LIGHT_CYAN);
+    print_string("] Complete!");
+
+    // Copyright
+    current_color = VGA_COLOR(COLOR_BLUE, COLOR_LIGHT_MAGENTA);
+    set_cursor_position(15, 20);
+    print_string("Copyright (C) 2025 ISPAA Technologies - All Rights Reserved");
+
+    set_cursor_position(20, 22);
+    print_string("Press any key to enter the ISPAA OS shell...");
+
+    // Wait for a moment
+    for (volatile int i = 0; i < 50000000; i++)
+        ;
+
+    // Reset colors
+    current_color = VGA_COLOR(COLOR_BLACK, COLOR_LIGHT_GRAY);
+}
+
 void command_shell(void)
 {
     char c;
@@ -460,6 +528,9 @@ void command_shell(void)
 
 void kernel_main()
 {
+    // Display enhanced boot sequence with ASCII art
+    display_boot_sequence();
+
     // Display welcome screen
     display_welcome_screen();
 
