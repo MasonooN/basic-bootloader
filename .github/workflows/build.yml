@@ -21,7 +21,7 @@ jobs:
     - name: Build the bootloader and kernel
       run: make
     - name: Archive the build outputs
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bootable_image
         path: bootable_image.bin
